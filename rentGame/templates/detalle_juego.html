@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %} detalle juego {% endblock %}
+
+{% block style%}
+  <link rel="stylesheet" href="{%static 'detalle.css'%}">
+{%endblock%}
+
+{% block body %}
+  <h1>{{object.nombre}}</h1>
+  <section class="contenedor">
+    <img src="{{object.imagen.url}}" alt="">
+  </section>
+	<br><br>
+
+
+{% endblock %}

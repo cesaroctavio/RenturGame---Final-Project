@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %} Index {% endblock %}
+
+{% block style%}
+  <link rel="stylesheet" href="{%static 'index.css'%}">
+  <script type="text/javascript" src="{% static 'jquery-2.1.4.js' %} "> </script>
+{%endblock%}
+
+{% block body %}
+
+  {% if user.is_authenticated%}
+    <script type="text/javascript">
+      var logeado = true;
+    </script>
+  {%else%}
+    <script type="text/javascript">
+      var logeado = false;
+    </script>
+  {%endif%}
+
+  <h2 id="titulo">Catalogo</h2>
+  <section class="contenedor">
+
+    {%for juego in videojuegos%}
+      <a class="link_imagen" href="detail_juego/{{juego.id}}">
+        <img src="{{juego.imagen.url}}" alt="">
+      </a>
+    {%endfor%}
+  </section>
+
+  <script type="text/javascript">
+    function evento(e){//Evita que un elemento <a> redireccione
+      e.preventDefault();
+      alert('Debes iniciar sesion para completar la accion');
+    }
+    var imagenes = document.getElementsByTagName('img'); //Obtener arreglo de todas las imagenes
+    for(var i = 0; i< imagenes.length; i++){
+      imagenes[i].classList.add("imagen");//Agregar clase a cada imagen del arreglo(para el estilo)
+    }
+
+    if(!logeado){//Si no esta logeado, no puede ver la imagen grande
+      var links = document.getElementsByClassName('link_imagen');
+      for(var i = 0; i< links.length; i++){
+        links[i].addEventListener("click",evento);//Agregar clase a cada imagen del arreglo(para el estilo)
+      }
+    }
+  </script>
+
+  <script>
+    $(document).ready(function(){
+      $.ajax({
+        type:"GET",
+        url:"http://localhost:8000/jsonVideojuego/",
+        success:function(response){
+          if (response.length == 0){//Si no hay registro hae return
+            $('.contenedor').append('No hay registros' );
+            return;
+          }
+          $('#titulo').append(" ("+response.length+")");
+        }
+      });
+    });
+   </script>
+
+{% endblock %}

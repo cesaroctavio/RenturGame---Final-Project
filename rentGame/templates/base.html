@@ -1,0 +1,35 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>
+    {% block title %}
+    {% endblock %}
+  </title>
+  {%block style%}
+  {%endblock%}
+  <link rel="stylesheet" href="{%static 'navbar.css'%}">
+</head>
+
+<body>
+  <nav>
+    <ul>
+      <a href="/"><li>Inicio</li></a>
+      {% if user.is_authenticated%}
+        {{user}}
+        <a href="/cerrar"><li>Cerrar sesion</li></a>
+        {%if user.username == 'admin'%}
+          <a href="http://localhost:8000/admin/miapp/videojuego/add/"><li>Agregar juegos</li></a>
+      {%endif%}
+    {%else%}
+      <a href="/login"><li>Iniciar sesion</li></a>
+      <a href="/signup"><li>Registro</li></a>
+    {%endif%}
+    </ul>
+  </nav>
+
+  {% block body %}
+  {% endblock %}
+  </body>
+</html>
